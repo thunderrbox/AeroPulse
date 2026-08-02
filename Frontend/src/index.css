@@ -4,39 +4,39 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* ─── Brand colors ─── */
-  --color-primary-50: #e6f6ff;
-  --color-primary-100: #b3e4ff;
-  --color-primary-200: #80d2ff;
-  --color-primary-300: #4dc0ff;
-  --color-primary-400: #1aaeff;
-  --color-primary-500: #0095e8;
-  --color-primary-600: #0077ba;
-  --color-primary-700: #005a8c;
-  --color-primary-800: #003d5e;
-  --color-primary-900: #002030;
+  /* ─── Brand colors (Sky Cobalt & Cockpit Horizon) ─── */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0284c7;
+  --color-primary-600: #0369a1;
+  --color-primary-700: #075985;
+  --color-primary-800: #0c4a6e;
+  --color-primary-900: #082f49;
 
-  --color-secondary-50: #eef0ff;
-  --color-secondary-100: #c9ceff;
-  --color-secondary-200: #a4acff;
-  --color-secondary-300: #7f8aff;
-  --color-secondary-400: #5a68ff;
-  --color-secondary-500: #3b4cdb;
-  --color-secondary-600: #2f3db0;
-  --color-secondary-700: #232e85;
-  --color-secondary-800: #171f5a;
-  --color-secondary-900: #0b102f;
+  --color-secondary-50: #ecfeff;
+  --color-secondary-100: #cffafe;
+  --color-secondary-200: #a5f3fc;
+  --color-secondary-300: #67e8f9;
+  --color-secondary-400: #22d3ee;
+  --color-secondary-500: #06b6d4;
+  --color-secondary-600: #0891b2;
+  --color-secondary-700: #0e7490;
+  --color-secondary-800: #155e75;
+  --color-secondary-900: #164e63;
 
-  --color-accent-50: #e6fffe;
-  --color-accent-100: #b3fffc;
-  --color-accent-200: #80fff9;
-  --color-accent-300: #4dfff7;
-  --color-accent-400: #1afff5;
-  --color-accent-500: #00e5db;
-  --color-accent-600: #00b8af;
-  --color-accent-700: #008a83;
-  --color-accent-800: #005c58;
-  --color-accent-900: #002e2c;
+  --color-accent-50: #ecfdf5;
+  --color-accent-100: #d1fae5;
+  --color-accent-200: #a7f3d0;
+  --color-accent-300: #6ee7b7;
+  --color-accent-400: #34d399;
+  --color-accent-500: #10b981;
+  --color-accent-600: #059669;
+  --color-accent-700: #047857;
+  --color-accent-800: #065f46;
+  --color-accent-900: #064e3b;
 
   /* ─── App-specific surface/status colors ─── */
   --color-surface-dark: #0c1222;
