@@ -45,8 +45,9 @@ const ensureFlightsExist = async () => {
         const flightDate = new Date(departure);
         flightDate.setHours(0, 0, 0, 0);
 
+        const flightNum = `${airline.substring(0, 2).toUpperCase()}${randomBetween(100, 999)}${i}`;
         flightsData.push({
-          flightNumber: `${airline.substring(0, 2).toUpperCase()}${randomBetween(100, 999)}`,
+          flightNumber: flightNum,
           airline,
           aircraft: randomFrom(['Boeing 737', 'Airbus A320', 'Boeing 787', 'Airbus A350']),
           origin,
