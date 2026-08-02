@@ -37,11 +37,12 @@ export const LoginPage = () => {
   }, [isAuthenticated, navigate, from]);
 
   const onSubmit = async (data) => {
-    dispatch(logoutImmediate());
     const resultAction = await dispatch(loginUser(data));
     if (loginUser.fulfilled.match(resultAction)) {
       toast.success(`Welcome back, ${resultAction.payload.user.firstName}!`);
-      navigate(from, { replace: true });
+      const userRole = resultAction.payload?.user?.role;
+      const targetPath = from === '/' ? (userRole === 'admin' ? '/admin' : '/dashboard') : from;
+      navigate(targetPath, { replace: true });
     } else {
       toast.error(resultAction.payload || 'Login failed');
     }

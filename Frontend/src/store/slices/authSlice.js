@@ -188,12 +188,17 @@ const authSlice = createSlice({
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
         state.isLoading = false;
-        state.user = null;
-        state.accessToken = null;
-        state.isAuthenticated = false;
-        state.isInitialized = true;
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
+        if (state.accessToken && state.user) {
+          state.isAuthenticated = true;
+          state.isInitialized = true;
+        } else {
+          state.user = null;
+          state.accessToken = null;
+          state.isAuthenticated = false;
+          state.isInitialized = true;
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('user');
+        }
       });
   },
 });

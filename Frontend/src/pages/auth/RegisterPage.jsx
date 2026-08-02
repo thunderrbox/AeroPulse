@@ -49,11 +49,10 @@ export const RegisterPage = () => {
   }, [dispatch]);
 
   const onSubmit = async (data) => {
-    dispatch(logoutImmediate());
     const resultAction = await dispatch(registerUser(data));
     if (registerUser.fulfilled.match(resultAction)) {
       toast.success("Registration successful! Welcome aboard.");
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } else {
       toast.error(resultAction.payload || "Registration failed");
     }
