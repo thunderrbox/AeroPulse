@@ -101,7 +101,7 @@ export const LandingPage = () => {
               className="inline-flex items-center gap-2.5 rounded-full border border-slate-700/80 bg-slate-900/90 px-4 py-1.5 text-xs font-semibold text-sky-400 shadow-sm"
             >
               <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>Real-Time Flight Engine by <strong className="text-white font-bold">Abhijeet Singh Rana</strong></span>
+              <span>✈ Real-Time Aviation & Flight Booking Platform</span>
             </motion.div>
 
             <motion.h1
@@ -339,7 +339,7 @@ export const LandingPage = () => {
                   Lead Engineering & Product Architecture
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-black text-white font-['Outfit']">
-                  Crafted by <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-amber-300">Abhijeet Singh Rana</span>
+                  Engineered with <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-amber-300">Precision & Innovation</span>
                 </h2>
                 <p className="text-sm text-slate-300 leading-relaxed max-w-2xl">
                   AeroPulse is built with an uncompromising focus on humanized UI/UX, transactional reliability, real-time database locks, and executive boarding management.

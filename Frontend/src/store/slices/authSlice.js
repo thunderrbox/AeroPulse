@@ -28,23 +28,14 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem('user', JSON.stringify(data.data.user));
       return data.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || 'Login failed'
-      );
+      const message =
+        error.response?.data?.errors?.[0]?.message ||
+        error.response?.data?.message ||
+        'Invalid email or password';
+      return rejectWithValue(message);
     }
   }
 );
-
-//FLOW -> 
-
-// Login page
-//    ↓ dispatch(loginUser(credentials))
-// authSlice async thunk
-//    ↓ authService.login(credentials)
-// authService
-//    ↓ Axios request
-// Backend: POST /api/auth/login
-
 
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -53,11 +44,13 @@ export const registerUser = createAsyncThunk(
       const { data } = await authService.register(userData);
       localStorage.setItem('accessToken', data.data.accessToken);
       localStorage.setItem('user', JSON.stringify(data.data.user));
-      return data.data;   //it returns the object to the fulfilled reducer as action.payload
+      return data.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || 'Registration failed'
-      );
+      const message =
+        error.response?.data?.errors?.[0]?.message ||
+        error.response?.data?.message ||
+        'Registration failed';
+      return rejectWithValue(message);
     }
   }
 );
