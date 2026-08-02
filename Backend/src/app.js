@@ -76,10 +76,19 @@ app.use("/api", apiLimiter); //for applying rate limiting
 
 //routes
 app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
+
 app.use("/api/user" ,userRoutes);
+app.use("/user" ,userRoutes);
+
 app.use('/api/flights', flightRoutes);
+app.use('/flights', flightRoutes);
+
 app.use('/api/bookings', bookingRoutes);
+app.use('/bookings', bookingRoutes);
+
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 
 
 // 404 handler
