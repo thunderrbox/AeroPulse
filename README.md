@@ -1,5 +1,7 @@
 # AeroPulse — Next-Gen Flight Booking Platform
 
+> Engineered & Authored Exclusively by **Abhijeet Singh Rana** (`thunderrbox`)
+
 **AeroPulse** is a full-stack flight booking and aviation management platform engineered by **Abhijeet Singh Rana**. Built using the MERN stack, it enables users to search routes in real-time, create instant reservations, and inspect digital boarding passes, while administrators access real-time revenue analytics and flight management tools.
 
 ## Project Overview
