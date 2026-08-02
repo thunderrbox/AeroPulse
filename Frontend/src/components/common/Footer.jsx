@@ -126,29 +126,35 @@ export const Footer = () => {
             </h4>
 
             <div className="mt-5 flex items-center gap-3">
-              <button
-                type="button"
-                aria-label="Twitter"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-cyan-500 hover:text-slate-950 hover:shadow-lg hover:shadow-cyan-500/25"
+              <a
+                href="https://x.com/AbhiRana557"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter / X"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-sky-500 hover:text-slate-950 hover:shadow-lg hover:shadow-sky-500/25"
               >
                 <TwitterIcon />
-              </button>
+              </a>
 
-              <button
-                type="button"
+              <a
+                href="https://www.linkedin.com/in/abhi-s-rana"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-cyan-500 hover:text-slate-950 hover:shadow-lg hover:shadow-cyan-500/25"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-sky-500 hover:text-slate-950 hover:shadow-lg hover:shadow-sky-500/25"
               >
                 <LinkedInIcon />
-              </button>
+              </a>
 
-              <button
-                type="button"
+              <a
+                href="https://github.com/thunderrbox"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-cyan-500 hover:text-slate-950 hover:shadow-lg hover:shadow-cyan-500/25"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 text-slate-300 transition-all hover:bg-sky-500 hover:text-slate-950 hover:shadow-lg hover:shadow-sky-500/25"
               >
                 <GitHubIcon />
-              </button>
+              </a>
             </div>
 
             <a
