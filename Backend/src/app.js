@@ -28,15 +28,16 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://sky-way-swart.vercel.app",
+  "https://aero-pulse.vercel.app",
+  "https://aero-pulse-nine.vercel.app",
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allows Postman, Render health checks, and server-to-server requests
-      if (!origin || allowedOrigins.includes(origin)) {  //no origin request comes from postman  ,so those requests are also allowed
+      // Allows Postman, server-to-server, and all Vercel deployment domains (*.vercel.app)
+      if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
         return callback(null, true);
       }
 
