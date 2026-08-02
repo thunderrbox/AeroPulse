@@ -9,6 +9,7 @@ const router = express.Router();
 router.use(authenticate);
 router.get('/me', userController.getMe);
 router.put('/me', userController.updateMe);
+router.patch('/me/upgrade', userController.upgradeToPremium);
 router.put('/me/password', changePassword, validate, userController.changePassword);
 
 

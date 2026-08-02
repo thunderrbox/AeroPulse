@@ -45,6 +45,20 @@ const updatedUser = await User.findByIdAndUpdate(
   }
 };
 
+const upgradeToPremium = async (req, res, next) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { role: 'premium', membershipTier: 'vip' },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    sendSuccess(res, 200, 'Upgraded to Executive VIP Premium status successfully!', { user: updatedUser });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const changePassword = async (req, res, next) => {
   try {
@@ -111,4 +125,4 @@ const changePassword = async (req, res, next) => {
 };
 
 
-export { getMe, updateMe, changePassword };
+export { getMe, updateMe, upgradeToPremium, changePassword };
