@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://aeropulse.onrender.com/api/:path*"
+      "destination": "https://aeropulse-ub26.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",
