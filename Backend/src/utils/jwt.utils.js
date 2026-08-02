@@ -55,14 +55,6 @@ const verifyAccessToken = (token) => {
 };
 
 
-const verifyAccessToken = (token) => {
-  return jwt.verify(
-    token,
-    process.env.JWT_SECRET
-  );
-};
-
-
 const revokeRefreshToken = async (rawToken) => {
   const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
   await RefreshToken.findOneAndUpdate(
