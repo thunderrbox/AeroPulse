@@ -22,51 +22,56 @@ const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) 
 const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const ensureFlightsExist = async () => {
-  const count = await Flight.countDocuments({ isDeleted: false });
-  if (count === 0) {
-    const flightsData = [];
-    const dateOffsets = [0, 1, 2, 3, 5, 7, 10, 14, 21, 30];
+  try {
+    const count = await Flight.countDocuments({ isDeleted: false });
+    if (count === 0) {
+      const flightsData = [];
+      const dateOffsets = [0, 1, 2, 3, 5, 7, 10, 14, 21, 30];
 
-    for (let i = 0; i < 35; i++) {
-      const origin = randomFrom(AIRPORTS);
-      let destination = randomFrom(AIRPORTS);
-      while (destination.code === origin.code) {
-        destination = randomFrom(AIRPORTS);
+      for (let i = 0; i < 35; i++) {
+        const origin = randomFrom(AIRPORTS);
+        let destination = randomFrom(AIRPORTS);
+        while (destination.code === origin.code) {
+          destination = randomFrom(AIRPORTS);
+        }
+        const airline = randomFrom(AIRLINES);
+        const daysAhead = randomFrom(dateOffsets);
+        const departure = new Date();
+        departure.setDate(departure.getDate() + daysAhead);
+        departure.setHours(randomBetween(6, 22), randomFrom([0, 15, 30, 45]), 0, 0);
+
+        const durationMins = randomBetween(90, 480);
+        const arrival = new Date(departure.getTime() + durationMins * 60000);
+        const flightDate = new Date(departure);
+        flightDate.setHours(0, 0, 0, 0);
+
+        flightsData.push({
+          flightNumber: `${airline.substring(0, 2).toUpperCase()}${randomBetween(100, 999)}`,
+          airline,
+          aircraft: randomFrom(['Boeing 737', 'Airbus A320', 'Boeing 787', 'Airbus A350']),
+          origin,
+          destination,
+          departureTime: departure,
+          arrivalTime: arrival,
+          flightDate,
+          duration: durationMins,
+          status: 'scheduled',
+          gate: `${randomFrom(['A', 'B', 'C'])}${randomBetween(1, 20)}`,
+          terminal: `T${randomBetween(1, 3)}`,
+          seats: {
+            economy: { total: 150, available: randomBetween(20, 140), price: randomBetween(3500, 12000) },
+            business: { total: 30, available: randomBetween(5, 25), price: randomBetween(15000, 45000) }
+          },
+          stops: randomFrom([0, 0, 0, 1]),
+          amenities: ['wifi', 'meals', 'usb'],
+          isFeatured: i % 4 === 0
+        });
       }
-      const airline = randomFrom(AIRLINES);
-      const daysAhead = randomFrom(dateOffsets);
-      const departure = new Date();
-      departure.setDate(departure.getDate() + daysAhead);
-      departure.setHours(randomBetween(6, 22), randomFrom([0, 15, 30, 45]), 0, 0);
-
-      const durationMins = randomBetween(90, 480);
-      const arrival = new Date(departure.getTime() + durationMins * 60000);
-      const flightDate = new Date(departure);
-      flightDate.setHours(0, 0, 0, 0);
-
-      flightsData.push({
-        flightNumber: `${airline.substring(0, 2).toUpperCase()}${randomBetween(100, 999)}`,
-        airline,
-        aircraft: randomFrom(['Boeing 737', 'Airbus A320', 'Boeing 787', 'Airbus A350']),
-        origin,
-        destination,
-        departureTime: departure,
-        arrivalTime: arrival,
-        flightDate,
-        duration: durationMins,
-        status: 'scheduled',
-        gate: `${randomFrom(['A', 'B', 'C'])}${randomBetween(1, 20)}`,
-        terminal: `T${randomBetween(1, 3)}`,
-        seats: {
-          economy: { total: 150, available: randomBetween(20, 140), price: randomBetween(3500, 12000) },
-          business: { total: 30, available: randomBetween(5, 25), price: randomBetween(15000, 45000) },
-          firstClass: { total: 10, available: randomBetween(2, 8), price: randomBetween(55000, 120000) }
-        },
-        stops: randomFrom([0, 0, 0, 1]),
-        baggageAllowance: { cabinKg: 7, checkinKg: 15 }
-      });
+      await Flight.insertMany(flightsData);
+      console.log('Successfully seeded 35 flights');
     }
-    await Flight.insertMany(flightsData);
+  } catch (err) {
+    console.error('ensureFlightsExist Error:', err.message);
   }
 };
 
