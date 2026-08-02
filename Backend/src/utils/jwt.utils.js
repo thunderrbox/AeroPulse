@@ -1,12 +1,16 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import  RefreshToken  from "../models/refreshToken.model.js";
+import RefreshToken from "../models/refreshToken.model.js";
 
+const getJwtSecret = () =>
+  process.env.JWT_SECRET ||
+  process.env.JWT_ACCESS_SECRET ||
+  'aeropulse_access_secret_key_2026_fallback_signature';
 
 const generateAccessToken = (userId, role) => {
   return jwt.sign(
-    { id: userId, role },  //we are also signing role,so the role of the user can be direclty identified by his access token and no db lookup is needed
-    process.env.JWT_SECRET,
+    { id: userId, role },
+    getJwtSecret(),
     { expiresIn: '15m' }
   );
 };
@@ -42,9 +46,12 @@ const verifyRefreshToken = async (rawToken) => {
     isRevoked: false,
     expiresAt: { $gt: new Date() },
   }).populate('user', '_id role email isActive');
-  //here we are sending the user doc as well,so that new tokens can be generated and saved in the db
 
   return tokenDoc;
+};
+
+const verifyAccessToken = (token) => {
+  return jwt.verify(token, getJwtSecret());
 };
 
 

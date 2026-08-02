@@ -14,13 +14,13 @@ const authenticate = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1]; //split the authHeader on the basis of space and get the first value i.e the token
 
-    let decoded;
+    const secret =
+      process.env.JWT_SECRET ||
+      process.env.JWT_ACCESS_SECRET ||
+      'aeropulse_access_secret_key_2026_fallback_signature';
 
     try {
-      decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET
-      );
+      decoded = jwt.verify(token, secret);
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         return next(
