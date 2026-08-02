@@ -63,11 +63,11 @@ export const LoginPage = () => {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/25 border border-red-200/50 dark:border-red-900/30 rounded-xl flex items-start gap-3 text-red-700 dark:text-red-400 text-sm">
-            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3 text-red-400 text-sm">
+            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" />
             <div>
-              <p className="font-semibold">Sign-in failed</p>
-              <p className="text-xs mt-0.5">{typeof error === 'string' ? error : error.message || 'Something went wrong'}</p>
+              <p className="font-semibold text-red-300">Sign-in Notice</p>
+              <p className="text-xs mt-0.5 text-red-200">{typeof error === 'string' ? error : error?.message || 'Invalid email or password'}</p>
             </div>
           </div>
         )}

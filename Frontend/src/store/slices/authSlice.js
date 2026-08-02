@@ -31,7 +31,9 @@ export const loginUser = createAsyncThunk(
       const message =
         error.response?.data?.errors?.[0]?.message ||
         error.response?.data?.message ||
-        'Invalid email or password';
+        (error.message === 'Network Error'
+          ? 'Cannot connect to backend API server. Please check VITE_API_URL settings.'
+          : error.message || 'Invalid email or password');
       return rejectWithValue(message);
     }
   }
@@ -49,7 +51,9 @@ export const registerUser = createAsyncThunk(
       const message =
         error.response?.data?.errors?.[0]?.message ||
         error.response?.data?.message ||
-        'Registration failed';
+        (error.message === 'Network Error'
+          ? 'Cannot connect to backend API server. Please check VITE_API_URL settings.'
+          : error.message || 'Registration failed');
       return rejectWithValue(message);
     }
   }

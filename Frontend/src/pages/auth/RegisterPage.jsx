@@ -92,11 +92,11 @@ export const RegisterPage = () => {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/25 border border-red-200/50 dark:border-red-900/30 rounded-xl flex items-start gap-3 text-red-700 dark:text-red-400 text-sm">
-            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3 text-red-400 text-sm">
+            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" />
             <div>
-              <p className="font-semibold">Registration failed</p>
-              <p className="text-xs mt-0.5">{error.message || error}</p>
+              <p className="font-semibold text-red-300">Registration Notice</p>
+              <p className="text-xs mt-0.5 text-red-200">{typeof error === 'string' ? error : error?.message || 'Registration failed'}</p>
             </div>
           </div>
         )}
