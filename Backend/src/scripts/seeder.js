@@ -23,9 +23,13 @@ import RefreshToken from '../models/refreshToken.model.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const existingUri = process.env.MONGODB_URI;
 dotenv.config({
   path: path.join(__dirname, '../../.env'),
 });
+if (existingUri) {
+  process.env.MONGODB_URI = existingUri;
+}
 
 
 const AIRPORTS = [
