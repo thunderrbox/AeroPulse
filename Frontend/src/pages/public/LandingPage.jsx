@@ -356,7 +356,7 @@ export const LandingPage = () => {
                 <div className="text-left lg:text-right">
                   <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Project Lead</p>
                   <p className="text-lg font-bold text-white">Abhijeet Singh Rana</p>
-                  <p className="text-xs text-sky-400">abhijeet@aeropulse.com</p>
+                  <p className="text-xs text-sky-400">srabhijeet7@gmail.com</p>
                 </div>
 
                 <a

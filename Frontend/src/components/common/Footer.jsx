@@ -158,11 +158,11 @@ export const Footer = () => {
             </div>
 
             <a
-              href="mailto:abhijeet@aeropulse.com"
+              href="mailto:srabhijeet7@gmail.com"
               className="mt-5 inline-flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-cyan-400"
             >
               <Mail className="h-4 w-4 text-cyan-400" />
-              abhijeet@aeropulse.com
+              srabhijeet7@gmail.com
             </a>
           </div>
         </div>
