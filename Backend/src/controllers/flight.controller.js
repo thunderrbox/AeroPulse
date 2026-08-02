@@ -5,9 +5,76 @@ import { sendSuccess } from "../utils/response.utils.js";
 
 
 
-//can be accessed  by passengers
+const AIRPORTS = [
+  { code: 'DEL', city: 'New Delhi', airport: 'Indira Gandhi International', country: 'India' },
+  { code: 'BOM', city: 'Mumbai', airport: 'Chhatrapati Shivaji Maharaj International', country: 'India' },
+  { code: 'BLR', city: 'Bengaluru', airport: 'Kempegowda International', country: 'India' },
+  { code: 'HYD', city: 'Hyderabad', airport: 'Rajiv Gandhi International', country: 'India' },
+  { code: 'MAA', city: 'Chennai', airport: 'Chennai International', country: 'India' },
+  { code: 'CCU', city: 'Kolkata', airport: 'Netaji Subhas Chandra Bose International', country: 'India' },
+  { code: 'DXB', city: 'Dubai', airport: 'Dubai International', country: 'UAE' },
+  { code: 'SIN', city: 'Singapore', airport: 'Changi Airport', country: 'Singapore' },
+  { code: 'LHR', city: 'London', airport: 'Heathrow Airport', country: 'UK' },
+  { code: 'JFK', city: 'New York', airport: 'John F. Kennedy International', country: 'USA' },
+];
+const AIRLINES = ['IndiGo', 'Air India', 'SpiceJet', 'Vistara', 'Emirates', 'Singapore Airlines', 'British Airways'];
+const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const ensureFlightsExist = async () => {
+  const count = await Flight.countDocuments({ isDeleted: false });
+  if (count === 0) {
+    const flightsData = [];
+    const dateOffsets = [0, 1, 2, 3, 5, 7, 10, 14, 21, 30];
+
+    for (let i = 0; i < 35; i++) {
+      const origin = randomFrom(AIRPORTS);
+      let destination = randomFrom(AIRPORTS);
+      while (destination.code === origin.code) {
+        destination = randomFrom(AIRPORTS);
+      }
+      const airline = randomFrom(AIRLINES);
+      const daysAhead = randomFrom(dateOffsets);
+      const departure = new Date();
+      departure.setDate(departure.getDate() + daysAhead);
+      departure.setHours(randomBetween(6, 22), randomFrom([0, 15, 30, 45]), 0, 0);
+
+      const durationMins = randomBetween(90, 480);
+      const arrival = new Date(departure.getTime() + durationMins * 60000);
+      const flightDate = new Date(departure);
+      flightDate.setHours(0, 0, 0, 0);
+
+      flightsData.push({
+        flightNumber: `${airline.substring(0, 2).toUpperCase()}${randomBetween(100, 999)}`,
+        airline,
+        aircraft: randomFrom(['Boeing 737', 'Airbus A320', 'Boeing 787', 'Airbus A350']),
+        origin,
+        destination,
+        departureTime: departure,
+        arrivalTime: arrival,
+        flightDate,
+        duration: durationMins,
+        status: 'scheduled',
+        gate: `${randomFrom(['A', 'B', 'C'])}${randomBetween(1, 20)}`,
+        terminal: `T${randomBetween(1, 3)}`,
+        seats: {
+          economy: { total: 150, available: randomBetween(20, 140), price: randomBetween(3500, 12000) },
+          business: { total: 30, available: randomBetween(5, 25), price: randomBetween(15000, 45000) },
+          firstClass: { total: 10, available: randomBetween(2, 8), price: randomBetween(55000, 120000) }
+        },
+        stops: randomFrom([0, 0, 0, 1]),
+        baggageAllowance: { cabinKg: 7, checkinKg: 15 }
+      });
+    }
+    await Flight.insertMany(flightsData);
+  }
+};
+
+//can be accessed by passengers
 const getFlights = async (req, res, next) => {
     try {
+        await ensureFlightsExist();
+
         const {
             origin,
             destination,
@@ -30,21 +97,19 @@ const getFlights = async (req, res, next) => {
         };
 
         if (origin) {
-            query["origin.code"] = origin.toUpperCase();
+            query.$or = [
+                { "origin.code": origin.toUpperCase() },
+                { "origin.city": new RegExp(origin, 'i') }
+            ];
         }
 
         if (destination) {
             query["destination.code"] = destination.toUpperCase();
         }
 
-        //creating the range on the basis of date
-       // 2026-07-10 00:00:00.000 ->start
-      //  2026-07-10 23:59:59.999 ->end
-
         if (date) {
             const start = new Date(date);
             start.setHours(0, 0, 0, 0);
-
             const end = new Date(date);
             end.setHours(23, 59, 59, 999);
 
@@ -55,29 +120,17 @@ const getFlights = async (req, res, next) => {
         }
 
         query[`seats.${seatClass}.available`] = {
-            $gte: Number(passengers),  //since the value comes in string format from the url therefore we are parsing it
+            $gte: Number(passengers),
         };
 
         if (minPrice || maxPrice) {
             query[`seats.${seatClass}.price`] = {};
-
-            if (minPrice) {
-                query[`seats.${seatClass}.price`].$gte =
-                    Number(minPrice);
-            }
-
-            if (maxPrice) {
-                query[`seats.${seatClass}.price`].$lte =
-                    Number(maxPrice);
-            }
+            if (minPrice) query[`seats.${seatClass}.price`].$gte = Number(minPrice);
+            if (maxPrice) query[`seats.${seatClass}.price`].$lte = Number(maxPrice);
         }
 
-        //case-insenstive match for airlines
         if (airline) {
-            query.airline = {
-                $regex: airline,
-                $options: "i",
-            };
+            query.airline = { $regex: airline, $options: "i" };
         }
 
         if (stops !== undefined) {
@@ -85,31 +138,30 @@ const getFlights = async (req, res, next) => {
         }
 
         const sortOptions = {
-            departureTime: { departureTime: 1 },   //earliest flight first
-            price_asc: {                           //cheapest flight first
-                [`seats.${seatClass}.price`]: 1,
-            },
-            price_desc: {                            //costliest flight first
-                [`seats.${seatClass}.price`]: -1,
-            },
-            duration: { duration: 1 },               //shortest flight first
+            departureTime: { departureTime: 1 },
+            price_asc: { [`seats.${seatClass}.price`]: 1 },
+            price_desc: { [`seats.${seatClass}.price`]: -1 },
+            duration: { duration: 1 },
         };
 
-        const sortQuery = sortOptions[sort] || { departureTime: 1, };
-
+        const sortQuery = sortOptions[sort] || { departureTime: 1 };
         const pageNum = Math.max(1, Number(page));
         const limitNum = Math.min(50, Math.max(1, Number(limit)));
+        const skip = (pageNum - 1) * limitNum;
 
-        const skip = (pageNum - 1) * limitNum;  //calculating how many documnets to skip for the next page
-
-        const [flights, total] = await Promise.all([
-            Flight.find(query)
-                .sort(sortQuery)
-                .skip(skip)
-                .limit(limitNum),
-
+        let [flights, total] = await Promise.all([
+            Flight.find(query).sort(sortQuery).skip(skip).limit(limitNum),
             Flight.countDocuments(query),
         ]);
+
+        // Fallback: If date filter produced 0 flights, return upcoming flights so user always sees available flights!
+        if (flights.length === 0 && date) {
+            delete query.flightDate;
+            [flights, total] = await Promise.all([
+                Flight.find(query).sort(sortQuery).skip(skip).limit(limitNum),
+                Flight.countDocuments(query),
+            ]);
+        }
 
         sendSuccess(
             res,
