@@ -53,11 +53,8 @@ export const Navbar = () => {
           </span>
 
           <span className="leading-none">
-            <span className="block text-xl font-black tracking-tight text-white font-['Outfit']">
-              AERO<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-amber-400">PULSE</span>
-            </span>
-            <span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.22em] text-cyan-400/90">
-              by Abhijeet Singh Rana
+            <span className="block text-2xl font-black tracking-tight text-white font-['Outfit']">
+              AERO<span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-amber-400">PULSE</span>
             </span>
           </span>
         </Link>
